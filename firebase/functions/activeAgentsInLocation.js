@@ -54,7 +54,6 @@ module.exports = function activeAgentsInLocation(agent){
     }
   ]
          */
-        const endpointDetails = 'endpoint-data/network-topology/';
 
         return utils.createRequest(endpoint, 'GET', { qs, body :
           {
@@ -62,9 +61,10 @@ module.exports = function activeAgentsInLocation(agent){
               { "key": "location", "values": ["London"] }
             ]
           }})
-            .then(res =>
-              let agentsCount = new Set(res.networkProbes.map(e => e.networkProbes[0]).map(e => e.agentId))
-              agent.add(`The number of agents that are active in location : London is ${agentsCount}`)
-            );
+            .then(res => {
+                console.log(res.networkProbes);
+                let agentsCount = new Set(res.networkProbes.map(e => e.networkProbes[0]).map(e => e.agentId));
+                agent.add(`The number of agents that are active in location : London is ${agentsCount}`);
+            });
     }
 };
