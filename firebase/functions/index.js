@@ -4,7 +4,7 @@
 
 const functions = require('firebase-functions');
 const {WebhookClient} = require('dialogflow-fulfillment');
-const {Card, Suggestion} = require('dialogflow-fulfillment');
+const onlineAgents = require('./onlineAgents');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -20,11 +20,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function fallback(agent) {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
-  }
-
-  function onlineAgents(agent){
-    agent.add('Meow!');
-
   }
 
   // // Uncomment and edit to make your own intent handler
@@ -60,8 +55,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  intentMap.set('OnlineAgents', onlineAgents);
-  // intentMap.set('your intent name here', yourFunctionHandler);
-  // intentMap.set('your intent name here', googleAssistantHandler);
+  intentMap.set('OnlineAgents', onlineAgents(agent));
   agent.handleRequest(intentMap);
 });
