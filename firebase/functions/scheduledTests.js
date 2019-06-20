@@ -57,7 +57,7 @@ const scheduledTests = function(agent) {
                         }
                         else {
                             let sum = res.endpointWeb.httpServer.reduce((acc, dp) => dp.totalTime ? acc + dp.totalTime : 0, 0);
-                            let avg = sum / cnt;
+                            let avg = Math.round(sum / cnt);
 
                             const results = `${cnt} agents are testing ${server} with an average response time of ${avg} milliseconds`;
 
