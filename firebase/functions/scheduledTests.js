@@ -1,7 +1,7 @@
 const utils = require('./utils');
 
-function findTestId(server, httpTestList) {
-    return '9900916';
+function findTestId(server, list) {
+    return list.endpointTest.find(test => test.server === server).testId;
 }
 
 module.exports = function scheduledTests(agent) {
