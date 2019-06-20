@@ -1,13 +1,15 @@
 const utils = require('./utils');
 
-const allowedRequestValues = ['lowest', 'highest']
+const allowedRequestValues = ['lowest', 'highest', 'average']
 
 module.exports = function experienceScore(agent, request){
     function getExperienceScore(experienceScoresForDomain, requestedValue) {
         if (requestedValue === 'lowest') {
             return Math.min(...experienceScoresForDomain);
-        } else {
+        } else if (requestedValue === 'highest') {
             return Math.max(...experienceScoresForDomain);
+        } else {
+            return experienceScoresForDomain.reduce((a, b) => a + b) / experienceScoresForDomain.length;
         }
     }
 
