@@ -1,27 +1,25 @@
-const request = require('request');
+const requestPromise = require('request-promise');
 const cheerio = require('cheerio');
 const pageToVisit = "https://status.stg.thousandeyes.com";
 
 const apiStatus = function(agent) {
     return () => {
-        request(pageToVisit, function(error, response, body) {
-            if(error) {
-                console.log("Error: " + error);
-            }
-
-            console.log("Status code: " + response.statusCode);
+        return requestPromise({
+            method: 'GET',
+            url: pageToVisit,
+            resolveWithFullResponse: true
+        }).then(response => {
             if(response.statusCode === 200) {
                 // Parse the document body
-                const $ = cheerio.load(body);
+                const $ = cheerio.load(response.body);
 
-                const allSystemsAreOperational ='All systems are operational';
+                const allSystemsAreOperational = 'All systems are operational';
 
                 const bodyText = $('html > body').text();
 
-                if(bodyText.toLowerCase().indexOf(allSystemsAreOperational.toLowerCase()) !== -1) {
+                if (bodyText.toLowerCase().indexOf(allSystemsAreOperational.toLowerCase()) !== -1) {
                     agent.add(allSystemsAreOperational);
-                }
-                else {
+                } else {
                     agent.add("Issue is detected");
                 }
             }
