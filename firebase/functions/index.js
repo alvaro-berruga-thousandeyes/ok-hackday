@@ -7,6 +7,7 @@ const {WebhookClient} = require('dialogflow-fulfillment');
 const onlineAgents = require('./onlineAgents');
 const activeAgentsInLocation = require('./activeAgentsInLocation');
 const scheduledTests = require('./scheduledTests');
+const requestPromise = require('request-promise');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -14,6 +15,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   const agent = new WebhookClient({ request, response });
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+  console.log('Testing Console');
+  console.log(getToken());
 
   function welcome(agent) {
     agent.add(`Welcome to my agent!`);
@@ -22,6 +25,28 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function fallback(agent) {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
+  }
+
+  function getToken() {
+    return functions.config()['endpoint-home-demo'].basicauth;
+  }
+  function onlineAgents(){
+    const token = getToken();
+    
+    return requestPromise({
+      url: 'https://api.stg.thousandeyes.com/v6/endpoint-data/network-topology.json',
+      headers: {
+        'Authorization': `Basic ${token}`
+      },
+
+      qs:{
+          window: '6m'
+      }
+
+    }).then(res => {
+        const jsonRes = JSON.parse(res);
+        agent.add(`The number of agents connected is ${jsonRes.networkProbes.length}`);
+    });
   }
 
   // // Uncomment and edit to make your own intent handler

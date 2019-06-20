@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "firebase serve --only functions:dialogflowFirebaseFulfillment",
-    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment"
+    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment",
+    "deploy.key": "firebase functions:config:set endpoint-home-demo.basicauth=\"c3NvdXJpc0B0aG91c2FuZGV5ZXMuY29tOjJkNjRyOHc1MjExY3p5bzVoMzI4cHEwd2VvajVzcHVm\""
   },
   "dependencies": {
     "actions-on-google": "^2.2.0",
