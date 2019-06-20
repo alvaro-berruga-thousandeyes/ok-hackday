@@ -1,0 +1,7 @@
+*.class
+*.classpath
+*.project
+*.settings
+.DS_Store
+.idea/
+firebase/functions/node_modules
