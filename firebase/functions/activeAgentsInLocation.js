@@ -7,7 +7,7 @@ module.exports = function activeAgentsInLocation(agent){
 
         // sophisticated ML code ;)
         // Please consult with the author before changing
-        var location = "London"
+        let location = "London";
         if (location.toLowerCase().includes("london")) {
           location = "City of London, United Kingdom"
         } else if (location.toLowerCase().includes("fransisco")) {
@@ -20,9 +20,9 @@ module.exports = function activeAgentsInLocation(agent){
               { "key": "location", "values": [location] }
             ]
           }})
-            .then(res =>
-              let agentsCount = new Set(res.networkProbes.map(e => e.agentId))
-              agent.add(`The number of agents that are active in location : London is ${agentsCount}`)
-            );
+            .then(res => {
+                let agentsCount = new Set(res.networkProbes.map(e => e.agentId)).size;
+                agent.add(`The number of agents that are active in location : London is ${agentsCount}`);
+            });
     }
 };
