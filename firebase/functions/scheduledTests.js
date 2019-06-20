@@ -4,13 +4,13 @@ function findTestId(server, list) {
     return list.endpointTest.find(test => test.server === server).testId;
 }
 
-module.exports = function scheduledTests(agent) {
+const scheduledTests = function(agent) {
     return () => {
         const listEndpoint = 'endpoint-tests/http-server.json';
 
         const server = 'http.cat'; // TODO parameters
 
-        return utils.createRequest(listEndpoint)
+        return utils.createRequest(listEndpoint, 'GET', { })
             .then(res => {
                 const testId = findTestId(server, res);
                 const detailsEndpoint = 'endpoint-data/tests/web/http-server/' + testId + '.json';
@@ -26,4 +26,6 @@ module.exports = function scheduledTests(agent) {
                     });
             });
     }
-};
+}
+
+module.exports = scheduledTests;
