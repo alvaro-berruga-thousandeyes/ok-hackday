@@ -6,6 +6,10 @@ function findTestId(server, list) {
 }
 
 function ticksSinceEpoch(dateTime) {
+    if(!dateTime) {
+        return new Date().getTime();
+    }
+
     const d = new Date(dateTime);
     const now = new Date();
 
@@ -44,8 +48,6 @@ const scheduledTests = function(agent) {
                     'to': toIsoString(toTicks)
                 };
 
-                console.log(qs);
-
                 return utils.createRequest(detailsEndpoint, 'GET', { qs })
                     .then(res => {
                         let cnt = res.endpointWeb.httpServer.length;
@@ -61,6 +63,13 @@ const scheduledTests = function(agent) {
                     });
             });
     }
-}
+};
 
 module.exports = scheduledTests;
+
+// scheduledTests({
+//     parameters: {
+//         date_time: "",
+//         url: 'http.cat'
+//     }
+// })();

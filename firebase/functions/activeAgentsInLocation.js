@@ -10,7 +10,7 @@ module.exports = function activeAgentsInLocation(agent){
         let location = "London";
         if (location.toLowerCase().includes("london")) {
           location = "City of London, United Kingdom"
-        } else if (location.toLowerCase().includes("fransisco")) {
+        } else if (location.toLowerCase().includes("francisco")) {
           location = "San Francisco Bay Area"
         }
 
