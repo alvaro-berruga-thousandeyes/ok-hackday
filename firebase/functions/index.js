@@ -56,7 +56,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  // intentMap.set('OnlineAgents', onlineAgents(agent));
-  intentMap.set('OnlineAgents', activeAgentsInLocation(agent));
+  intentMap.set('OnlineAgents', onlineAgents(agent));
+  intentMap.set('ActiveAgentsInLocation', activeAgentsInLocation(agent));
   agent.handleRequest(intentMap);
 });
