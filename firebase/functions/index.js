@@ -5,9 +5,8 @@
 const functions = require('firebase-functions');
 const {WebhookClient} = require('dialogflow-fulfillment');
 const onlineAgents = require('./onlineAgents');
+const experienceScore = require('./experienceScore');
 const apiStatus = require('./apiStatus');
-
-
 const activeAgentsInLocation = require('./activeAgentsInLocation');
 const scheduledTests = require('./scheduledTests');
 const requestPromise = require('request-promise');
@@ -65,6 +64,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('ActiveAgentsInLocation', activeAgentsInLocation(agent));
   intentMap.set('ScheduledTests', scheduledTests(agent));
   intentMap.set('APIStatus', apiStatus(agent));
+  intentMap.set('MetricForDomain', experienceScore(agent, request));
 
   agent.handleRequest(intentMap);
 });
