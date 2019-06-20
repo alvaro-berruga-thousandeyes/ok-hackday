@@ -1,4 +1,5 @@
 const utils = require('./utils');
+const {Card, Suggestion} = require('dialogflow-fulfillment');
 
 function findTestId(server, list) {
     const test = list.endpointTest.find(test => test.server === server);
@@ -58,7 +59,20 @@ const scheduledTests = function(agent) {
                             let sum = res.endpointWeb.httpServer.reduce((acc, dp) => dp.totalTime ? acc + dp.totalTime : 0, 0);
                             let avg = sum / cnt;
 
-                            agent.add(`${cnt} agents are testing ${server} with an average response time of ${avg} milliseconds`);
+                            const results = `${cnt} agents are testing ${server} with an average response time of ${avg} milliseconds`;
+
+                            if(server !== 'http.cat') {
+                                agent.add(results);
+                            } else {
+                                const text = `Meow meow ${avg} miliseconds... Meow meow`;
+
+                                agent.add(new Card({
+                                    title: `Meow meow`,
+                                    imageUrl: 'https://pbs.twimg.com/profile_images/1080545769034108928/CEzHCTpI_400x400.jpg',
+                                }));
+
+                                agent.add(text);
+                            }
                         }
                     });
             });
