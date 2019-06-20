@@ -7,6 +7,12 @@ function findTestId(server, list) {
 
 function ticksSinceEpoch(dateTime) {
     const d = new Date(dateTime);
+    const now = new Date();
+
+    if(d.getUTCFullYear() > now.getUTCFullYear()) {
+        d.setUTCFullYear(now.getUTCFullYear());
+    }
+
     return d.getTime();
 }
 
@@ -29,8 +35,7 @@ const scheduledTests = function(agent) {
                     return;
                 }
 
-                var toTicks = ticksSinceEpoch(agent.parameters.time);
-                toTicks -= 86400000; // - 24 hours.. Hack because request times are one day ahead for some reason.
+                const toTicks = ticksSinceEpoch(agent.parameters.date_time);
                 const fromTicks = ticksSinceEpoch(toTicks - 300000); // + 5 minutes
 
                 const detailsEndpoint = 'endpoint-data/tests/web/http-server/' + testId + '.json';
