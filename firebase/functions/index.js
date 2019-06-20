@@ -5,6 +5,7 @@
 const functions = require('firebase-functions');
 const {WebhookClient} = require('dialogflow-fulfillment');
 const onlineAgents = require('./onlineAgents');
+const activeAgentsInLocation = require('./activeAgentsInLocation');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -55,6 +56,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  intentMap.set('OnlineAgents', onlineAgents(agent));
+  // intentMap.set('OnlineAgents', onlineAgents(agent));
+  intentMap.set('OnlineAgents', activeAgentsInLocation(agent));
   agent.handleRequest(intentMap);
 });
