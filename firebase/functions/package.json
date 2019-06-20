@@ -10,14 +10,18 @@
   },
   "scripts": {
     "start": "firebase serve --only functions:dialogflowFirebaseFulfillment",
-    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment"
+    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment",
+    "deploy.key": "firebase functions:config:set endpoint-home-demo.basicauth=\"c3NvdXJpc0B0aG91c2FuZGV5ZXMuY29tOjJkNjRyOHc1MjExY3p5bzVoMzI4cHEwd2VvajVzcHVm\""
   },
   "dependencies": {
     "actions-on-google": "^2.2.0",
+    "cheerio": "^1.0.0-rc.3",
     "dialogflow": "^0.6.0",
     "dialogflow-fulfillment": "^0.5.0",
     "firebase-admin": "5.13.1",
     "firebase-functions": "^2.0.2",
-    "request-promise": "^4.2.4"
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "url-parse": "^1.4.7"
   }
 }
