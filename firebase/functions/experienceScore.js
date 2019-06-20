@@ -1,6 +1,18 @@
 const utils = require('./utils');
 
+const allowedRequestValues = ['lowest', 'highest', 'average']
+
 module.exports = function experienceScore(agent, request){
+    function getExperienceScore(experienceScoresForDomain, requestedValue) {
+        if (requestedValue === 'lowest') {
+            return Math.min(...experienceScoresForDomain);
+        } else if (requestedValue === 'highest') {
+            return Math.max(...experienceScoresForDomain);
+        } else {
+            return experienceScoresForDomain.reduce((a, b) => a + b) / experienceScoresForDomain.length;
+        }
+    }
+
     return () => {
         const qs = { window: '6m' };
         const endpoint = 'endpoint-data/user-sessions.json';
@@ -12,7 +24,14 @@ module.exports = function experienceScore(agent, request){
                     return;
                 }
 
-                const visitedSite = request.queryResult.parameters.url;
+                const visitedSite = request.body.queryResult.parameters.url;
+                const requestedValue = request.body.queryResult.parameters.RequestedValue;
+
+                if (!allowedRequestValues.includes(requestedValue)) {
+                    agent.add('Sorry, I didn\'t understand your question, could you try again?');
+                    return;
+                }
+
                 if (!visitedSite) {
                     throw new Error('No visited site requested');
                 }
@@ -27,9 +46,9 @@ module.exports = function experienceScore(agent, request){
                     return;
                 }
 
-                const lowestExperienceScore = Math.min(...experienceScoresForDomain);
+                const requestedES = getExperienceScore(experienceScoresForDomain);
 
-                agent.add(`The lowest experience score seen by the agents in the last few minutes for ${visitedSite} is ${Math.round(lowestExperienceScore * 100)}%`)
+                agent.add(`The ${requestedValue} experience score seen by the agents in the last few minutes for ${visitedSite} is ${Math.round(requestedES * 100)}%`)
             });
     }
 };

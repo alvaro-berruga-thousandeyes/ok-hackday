@@ -9,7 +9,6 @@ const experienceScore = require('./experienceScore');
 const apiStatus = require('./apiStatus');
 const activeAgentsInLocation = require('./activeAgentsInLocation');
 const scheduledTests = require('./scheduledTests');
-const requestPromise = require('request-promise');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
