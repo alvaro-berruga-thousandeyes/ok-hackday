@@ -56,13 +56,15 @@ module.exports = function activeAgentsInLocation(agent){
          */
         const endpointDetails = 'endpoint-data/network-topology/';
 
-        return utils.createRequest(endpoint, 'GET', { qs })
-            .then(res => {
-                return Promise.all(res.networkProbes.map(probe => utils.createRequest(endpointDetails + probe.networkProbeId, 'GET', {})));
-            })
-            .then(res => {
-              let agentsCount = new Set(res.map(e => e.networkProbes[0]).filter(e => e.coordinates.location.includes('London')).map(e => e.agentId));
-              agent.add(`The number of agents that are active in location : London is ${agentsCount}`);
-            });
+        return utils.createRequest(endpoint, 'GET', { qs, body :
+          {
+            "searchFilters": [
+              { "key": "location", "values": ["London"] }
+            ]
+          }})
+            .then(res =>
+              let agentsCount = new Set(res.networkProbes.map(e => e.networkProbes[0]).map(e => e.agentId))
+              agent.add(`The number of agents that are active in location : London is ${agentsCount}`)
+            );
     }
 };
