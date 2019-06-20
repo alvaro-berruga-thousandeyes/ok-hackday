@@ -24,37 +24,6 @@ module.exports = function activeAgentsInLocation(agent){
         */
         const endpoint = 'endpoint-data/network-topology.json';
 
-
-        /**
-  [      {
-          "networkProbes": [
-              {
-                  "networkProbeId": "07893:16502142325895738497:1561035300:dfe71494",
-                  "agentId": "dfe71494-bce0-450c-8b44-22e5f56d4782",
-                  "coordinates": {
-                      "latitude": 51.5154317,
-                      "longitude": -0.1037872,
-                      "location": "City of London, United Kingdom"
-                  }
-              }
-          ]
-      },
-      {
-        "networkProbes": [
-            {
-                "networkProbeId": "07893:16502142325895738497:1561035300:dfe7149",
-                "agentId": "dfe71494-bce0-450c-8b44-22e5f56d478",
-                "coordinates": {
-                    "latitude": 51.5154317,
-                    "longitude": -0.1037872,
-                    "location": "City of London, United Kingdom"
-                }
-            }
-        ]
-    }
-  ]
-         */
-
         return utils.createRequest(endpoint, 'GET', { qs, body :
           {
             "searchFilters": [
@@ -62,8 +31,16 @@ module.exports = function activeAgentsInLocation(agent){
             ]
           }})
             .then(res => {
-                console.log(res.networkProbes);
-                let agentsCount = new Set(res.networkProbes.map(e => e.networkProbes[0]).map(e => e.agentId));
+                const alreadyHandled = {};
+                const agentsCount = new Set(res.networkProbes.reduce((acc, elem) => {
+                    if(alreadyHandled[elem.agentId]) {
+                        return acc;
+                    }
+
+                    alreadyHandled[elem.agentId] = true;
+                    return acc + 1;
+                },0));
+
                 agent.add(`The number of agents that are active in location : London is ${agentsCount}`);
             });
     }
