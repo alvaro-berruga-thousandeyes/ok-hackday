@@ -22,8 +22,8 @@ module.exports = function experienceScore(agent, request){
                     return;
                 }
 
-                const visitedSite = request.queryResult.parameters.url;
-                const requestedValue = request.queryResult.parameters.RequestedValue;
+                const visitedSite = request.body.queryResult.parameters.url;
+                const requestedValue = request.body.queryResult.parameters.RequestedValue;
 
                 if (!allowedRequestValues.includes(requestedValue)) {
                     agent.add('Sorry, I didn\'t understand your question, could you try again?');
