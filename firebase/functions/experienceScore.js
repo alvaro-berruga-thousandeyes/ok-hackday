@@ -1,8 +1,8 @@
 const utils = require('./utils');
 
-const allowedRequestValues = ['lowest', 'highest', 'average']
+const allowedRequestValues = ['lowest', 'highest', 'average'];
 
-module.exports = function experienceScore(agent, request){
+const experienceScore = function(agent, request){
     function getExperienceScore(experienceScoresForDomain, requestedValue) {
         if (requestedValue === 'lowest') {
             return Math.min(...experienceScoresForDomain);
@@ -52,3 +52,18 @@ module.exports = function experienceScore(agent, request){
             });
     }
 };
+
+module.exports = experienceScore;
+
+// experienceScore({
+//     add: console.log,
+// }, {
+//     body: {
+//         queryResult: {
+//             parameters: {
+//                 url: 'thousandeyes.com',
+//                 RequestedValue: 'lowest'
+//             }
+//         }
+//     }
+// })();
