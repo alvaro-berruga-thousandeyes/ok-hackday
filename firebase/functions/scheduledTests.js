@@ -81,9 +81,15 @@ const scheduledTests = function(agent) {
 
 module.exports = scheduledTests;
 
+// Uncomment for local testing
 // scheduledTests({
+//     add: console.log,
 //     parameters: {
-//         date_time: "",
-//         url: 'http.cat'
-//     }
+//         url: 'google.com',
+//         date_time: '',
+//     },
+//     // parameters: {
+//     //     url: 'http.cat',
+//     //     date_time: '',
+//     // }
 // })();
